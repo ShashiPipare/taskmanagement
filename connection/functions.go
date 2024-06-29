@@ -8,12 +8,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"main.go/config"
 )
 
-func Init() {
-	Database.URI = "mongodb://localhost:27017"
-	Database.Name = "blogs"
-	Database.Timeout = 10 * time.Second
+func Init(conf config.Conf) {
+	Database.URI = conf.MongoURI
+	Database.Name = conf.MongoDBName
+	Database.Timeout = time.Duration(conf.MongoDBTimeout) * time.Second
 }
 
 func ConnectDB() {

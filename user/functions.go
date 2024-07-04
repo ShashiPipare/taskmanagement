@@ -3,7 +3,16 @@ package user
 import (
 	"crypto/rand"
 	"encoding/base64"
+
+	"github.com/golang-jwt/jwt"
+	"main.go/config"
 )
+
+var JWTKey string
+
+func Init(conf config.Conf) {
+	JWTKey = conf.JWTKey
+}
 
 /*
 This function returns a URL-safe, base64 encoded securely generated random string
@@ -25,4 +34,16 @@ func generateRandomBytes(size int) ([]byte, error) {
 		return nil, err
 	}
 	return token, nil
+}
+
+/*
+This function is used to generate JWT token
+*/
+func generateJWT(claims Claims) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(JWTKey)
+	if err != nil {
+		return "", err
+	}
+	return tokenString, nil
 }

@@ -5,7 +5,9 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"fmt"
+	"time"
 
+	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/pbkdf2"
 	"main.go/connection"
@@ -37,4 +39,16 @@ func (u *User) authenticateUser(password string) (error, bool) {
 		return nil, true
 	}
 	return nil, false
+}
+
+func (u *User) createToken() (string, error) {
+	claims := Claims{}
+	claims.userID = u.ID.Hex()
+	claims.Email = u.Email
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims.StandardClaims = jwt.StandardClaims{
+		ExpiresAt: expirationTime.Unix(),
+	}
+	token, err := generateJWT(claims)
+	return token, err
 }

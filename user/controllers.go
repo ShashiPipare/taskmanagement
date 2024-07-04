@@ -112,7 +112,6 @@ func login(c *fiber.Ctx) (err error) {
 	user := User{}
 	user.Email = apiBody.Path("email_id").Data().(string)
 	password := apiBody.Path("password").Data().(string)
-
 	err, ok := user.authenticateUser(password)
 	if err != nil {
 		return c.Status(200).JSON(&fiber.Map{
@@ -127,9 +126,18 @@ func login(c *fiber.Ctx) (err error) {
 			"message": "Incorrect password.",
 		})
 	}
+	jwtToken, err := user.createToken()
+	if err != nil {
+		return c.Status(200).JSON(&fiber.Map{
+			"success": false,
+			"message": "Error in authenticating user.",
+			"error":   err.Error(),
+		})
+	}
 	return c.Status(200).JSON(&fiber.Map{
-		"success": true,
-		"message": "user logged in succesfully.",
+		"success":   true,
+		"message":   "user logged in succesfully.",
+		"jwt_token": jwtToken,
 	})
 }
 

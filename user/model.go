@@ -1,6 +1,9 @@
 package user
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"github.com/golang-jwt/jwt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type User struct {
 	ID             primitive.ObjectID `bson:"_id",json:"_id"`
@@ -14,4 +17,10 @@ type User struct {
 type Auth struct {
 	Token string `bson:"token",json:"token"`
 	Hash  string `bson:"hash",json:"hash"`
+}
+
+type Claims struct {
+	userID string `json:"_id"`
+	Email  string `json:"email"`
+	jwt.StandardClaims
 }

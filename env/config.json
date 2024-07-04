@@ -2,5 +2,6 @@
     "server_port":":8080",
 	"mongo_uri":"mongodb://localhost:27017/",
 	"mongodb_name":"taskmanagement",
-	"mongodb_timeout":10
+	"mongodb_timeout":10,
+	"jwt_key":"secret_key"
 }

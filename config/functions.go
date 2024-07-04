@@ -21,6 +21,5 @@ func Init() Conf {
 	if err != nil {
 		log.Fatal("error in unmarshalling file")
 	}
-	log.Println(conf)
 	return conf
 }

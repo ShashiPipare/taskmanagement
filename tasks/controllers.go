@@ -11,6 +11,7 @@ import (
 
 func add(c *fiber.Ctx) (err error) {
 	a := data.New(c)
+	timeStamp := time.Now().UTC()
 	task := Task{}
 	err = c.BodyParser(&task)
 	if err != nil {
@@ -18,6 +19,8 @@ func add(c *fiber.Ctx) (err error) {
 		return a.Error(err)
 	}
 	log.Println("task:", task)
+	task.ID = primitive.NewObjectID()
+	task.Created.Time = timeStamp
 	err = task.add()
 	if err != nil {
 		log.Println("error in inserting task into db:", err)
@@ -77,6 +80,7 @@ func getAllTasks(c *fiber.Ctx) (err error) {
 
 func delete(c *fiber.Ctx) (err error) {
 	a := data.New(c)
+	timeStamp := time.Now().UTC()
 	task := Task{}
 	task.ID, _ = primitive.ObjectIDFromHex(c.Params("id", ""))
 	if err != nil {
@@ -86,6 +90,10 @@ func delete(c *fiber.Ctx) (err error) {
 	if task.ID == primitive.NilObjectID {
 		log.Println("nil objectID passed")
 		return a.Error(ErrNilObjectID)
+	}
+	task.Deleted = Deleted{
+		Ok:   true,
+		Time: timeStamp,
 	}
 	err = task.delete()
 	if err != nil {

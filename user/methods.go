@@ -22,7 +22,7 @@ func (u *User) getByEmail(email string) (err error) {
 			Value: email,
 		},
 	}
-	err = connection.MI.DB.Collection("users").FindOne(context.TODO(), filter).Decode(&u)
+	err = connection.MI.DB.Collection(collectionName).FindOne(context.TODO(), filter).Decode(&u)
 	if err != nil {
 		return
 	}
@@ -30,7 +30,7 @@ func (u *User) getByEmail(email string) (err error) {
 }
 func (u *User) insertOne() (err error) {
 	var insertedResult *mongo.InsertOneResult
-	insertedResult, err = connection.MI.DB.Collection("users").InsertOne(context.TODO(), u)
+	insertedResult, err = connection.MI.DB.Collection(collectionName).InsertOne(context.TODO(), u)
 	if err != nil {
 		return
 	}

@@ -1,6 +1,6 @@
 {
     "server_port":":8080",
-	"mongo_uri":"mongodb://localhost:27017/",
+	"mongo_uri":"mongodb+srv://spipare11:myPassword@cluster0.1ufs8b4.mongodb.net/",
 	"mongodb_name":"taskmanagement",
 	"mongodb_timeout":10,
 	"jwt_key":"secret_key"

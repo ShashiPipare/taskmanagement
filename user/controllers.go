@@ -3,6 +3,7 @@ package user
 import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"main.go/data"
 )
 
@@ -23,7 +24,7 @@ func signUp(c *fiber.Ctx) (err error) {
 	}
 	user := User{}
 	err = user.getByEmail(params.Email)
-	if err != nil {
+	if err != nil && err != mongo.ErrNoDocuments {
 		return a.Error(err)
 	}
 	if user.ID != primitive.NilObjectID {
@@ -37,7 +38,7 @@ func signUp(c *fiber.Ctx) (err error) {
 	if err != nil {
 		return a.Error(err)
 	}
-
+	user.ID = primitive.NewObjectID()
 	err = user.insertOne()
 	if err != nil {
 		return a.Error(err)
@@ -80,6 +81,6 @@ func login(c *fiber.Ctx) (err error) {
 }
 
 func logout(c *fiber.Ctx) (err error) {
-
-	return
+	a := data.New(c)
+	return a.Success()
 }

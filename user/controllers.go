@@ -82,5 +82,15 @@ func login(c *fiber.Ctx) (err error) {
 
 func logout(c *fiber.Ctx) (err error) {
 	a := data.New(c)
-	return a.Success()
+	type RequestParams struct {
+		ID       primitive.ObjectID `json:"user_id"`
+		jwtToken string             `json:"jwt_token"`
+	}
+	params := RequestParams{}
+	err = c.BodyParser(&params)
+	if err != nil {
+		return a.Error(err)
+	}
+
+	return a.Data("Logged out user successfully!")
 }

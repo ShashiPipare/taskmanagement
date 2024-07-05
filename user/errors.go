@@ -8,4 +8,5 @@ var (
 	ErrIncorrectPassword     = errors.New("incorrect password")
 	ErrAuthUser              = errors.New("error in authenticating user")
 	ErrEmailParamMandatory   = errors.New("missing mandatory key : email_id")
+	ErrInvalidJWT            = errors.New("Invalid token.")
 )

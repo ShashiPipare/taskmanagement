@@ -3,7 +3,6 @@ module main.go
 go 1.22.4
 
 require (
-	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	go.mongodb.org/mongo-driver v1.16.0

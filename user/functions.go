@@ -3,6 +3,7 @@ package user
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 
 	"github.com/golang-jwt/jwt"
 	"main.go/config"
@@ -46,4 +47,21 @@ func generateJWT(claims Claims) (string, error) {
 		return "", err
 	}
 	return tokenString, nil
+}
+
+/*
+This function validates JWT token
+*/
+func verifyToken(tokenString string) error {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return JWTKey, nil
+	})
+	if err != nil {
+		return err
+	}
+	token.
+	if !token.Valid {
+		return fmt.Errorf("invalid token")
+	}
+	return nil
 }

@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/golang-jwt/jwt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"main.go/config"
 )
 
@@ -52,16 +53,23 @@ func generateJWT(claims Claims) (string, error) {
 /*
 This function validates JWT token
 */
-func verifyToken(tokenString string) error {
+func verifyToken(ID primitive.ObjectID, tokenString string) error {
+	user := User{}
+	err := user.getByID(ID)
+	if err != nil {
+		return err
+	}
+	if !user.IsActive {
+		return fmt.Errorf(ErrInactiveUser.Error())
+	}
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return JWTKey, nil
 	})
 	if err != nil {
 		return err
 	}
-	token.
 	if !token.Valid {
-		return fmt.Errorf("invalid token")
+		return fmt.Errorf(ErrInvalidJWT.Error())
 	}
 	return nil
 }

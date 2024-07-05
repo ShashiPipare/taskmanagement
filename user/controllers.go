@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"main.go/data"
@@ -43,7 +44,6 @@ func signUp(c *fiber.Ctx) (err error) {
 	if err != nil {
 		return a.Error(err)
 	}
-
 	auth := Auth{}
 	user.Authentication = auth
 	return a.Data(user)
@@ -73,6 +73,16 @@ func login(c *fiber.Ctx) (err error) {
 	if !ok {
 		return a.Error(ErrIncorrectPassword)
 	}
+	set := bson.D{
+		{
+			Key:   "is_active",
+			Value: true,
+		},
+	}
+	err = user.updateUser(set)
+	if err != nil {
+		return a.Error(ErrUpdateUser)
+	}
 	jwtToken, err := user.createToken()
 	if err != nil {
 		return a.Error(ErrAuthUser)
@@ -91,6 +101,17 @@ func logout(c *fiber.Ctx) (err error) {
 	if err != nil {
 		return a.Error(err)
 	}
-
+	user := User{}
+	user.ID = params.ID
+	set := bson.D{
+		{
+			Key:   "is_active",
+			Value: false,
+		},
+	}
+	err = user.updateUser(set)
+	if err != nil {
+		return a.Error(ErrUpdateUser)
+	}
 	return a.Data("Logged out user successfully!")
 }

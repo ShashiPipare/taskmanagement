@@ -28,6 +28,21 @@ func (u *User) getByEmail(email string) (err error) {
 	}
 	return
 }
+
+func (u *User) getByID(userID primitive.ObjectID) (err error) {
+	filter := bson.D{
+		{
+			Key:   "_id",
+			Value: userID,
+		},
+	}
+	err = connection.MI.DB.Collection(collectionName).FindOne(context.TODO(), filter).Decode(&u)
+	if err != nil {
+		return
+	}
+	return
+}
+
 func (u *User) insertOne() (err error) {
 	var insertedResult *mongo.InsertOneResult
 	insertedResult, err = connection.MI.DB.Collection(collectionName).InsertOne(context.TODO(), u)
@@ -38,6 +53,19 @@ func (u *User) insertOne() (err error) {
 	return
 }
 
+func (u *User) updateUser(set bson.D) (err error) {
+	filter := bson.D{
+		{
+			Key:   "_id",
+			Value: u.ID,
+		},
+	}
+	_, err = connection.MI.DB.Collection(collectionName).UpdateOne(context.Background(), filter, set)
+	if err != nil {
+		return
+	}
+	return
+}
 func (u *User) encryptPassword(password string) (err error) {
 	salt := ""
 	salt, err = generateRandomString(32)

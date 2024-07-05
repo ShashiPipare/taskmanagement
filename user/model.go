@@ -14,6 +14,7 @@ type User struct {
 	Email          string             `bson:"email_id" json:"email_id"`
 	Country        string             `bson:"country" json:"country"`
 	Authentication Auth               `bson:"authentication" json:"authentication"`
+	IsActive       bool               `bson:"is_active",json:"is_active"`
 }
 
 type Auth struct {

@@ -3,5 +3,5 @@
 	"mongo_uri":"mongodb://localhost:27017/",
 	"mongodb_name":"taskmanagement",
 	"mongodb_timeout":10,
-	"jwt_key":"secret_key"
+	"jwt_key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlNoYXNoaWthbnQgUGlwYXJlIiwiaWF0Ijo3Nzk1Njg1NjY1fQ.BU0OVNtBViugFQrhvqIGk2VOzn3BnwncrLL6NlNe9-w"
 }
